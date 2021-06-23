@@ -1,0 +1,520 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% LIVECOMS ARTICLE TEMPLATE FOR BEST PRACTICES GUIDE
+%%% ADAPTED FROM ELIFE ARTICLE TEMPLATE (8/10/2017)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PREAMBLE
+\documentclass[9pt,review]{livecoms}
+% Use the 'onehalfspacing' option for 1.5 line spacing
+% Use the 'doublespacing' option for 2.0 line spacing
+% Use the 'lineno' option for adding line numbers.
+% Use the "ASAPversion' option following article acceptance to add the DOI and relevant dates to the document footer.
+% Use the 'pubversion' option for adding the citation and publication information to the document footer, when the LiveCoMS issue is finalized.
+% The 'bestpractices' option for indicates that this is a best practices guide.
+% Omit the bestpractices option to remove the marking as a LiveCoMS paper.
+% Please note that these options may affect formatting.
+
+\usepackage{lipsum} % Required to insert dummy text
+\usepackage[version=4]{mhchem}
+\usepackage{siunitx}
+\DeclareSIUnit\Molar{M}
+\usepackage[italic]{mathastext}
+\graphicspath{{figures/}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% IMPORTANT USER CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\versionnumber}{0.1}  % you should update the minor version number in preprints and major version number of submissions.
+\newcommand{\githubrepository}{\url{https://github.com/openforcefield/protein-benchmark-data}}  %this should be the main github repository for this article
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ARTICLE SETUP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Experimental datasets for benchmarking protein force fields [Article v\versionnumber]}
+
+\author[1*]{Firstname Middlename Surname}
+\author[1,2\authfn{1}\authfn{3}]{Firstname Middlename Familyname}
+\author[2\authfn{1}\authfn{4}]{Firstname Initials Surname}
+\author[2*]{Firstname Surname}
+\affil[1]{Institution 1}
+\affil[2]{Institution 2}
+
+\corr{email1@example.com}{FMS}  % Correspondence emails.  FMS and FS are the appropriate authors initials.
+\corr{email2@example.com}{FS}
+
+\orcid{Author 1 name}{AAAA-BBBB-CCCC-DDDD}
+\orcid{Author 2 name}{EEEE-FFFF-GGGG-HHHH}
+
+\contrib[\authfn{1}]{These authors contributed equally to this work}
+\contrib[\authfn{2}]{These authors also contributed equally to this work}
+
+\presentadd[\authfn{3}]{Department, Institute, Country}
+\presentadd[\authfn{4}]{Department, Institute, Country}
+
+\blurb{This LiveCoMS document is maintained online on GitHub at \githubrepository; to provide feedback, suggestions, or help improve it, please visit the GitHub repository and participate via the issue tracker.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PUBLICATION INFORMATION
+%%% Fill out these parameters when available
+%%% These are used when the "pubversion" option is invoked
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pubDOI{10.XXXX/YYYYYYY}
+\pubvolume{<volume>}
+\pubissue{<issue>}
+\pubyear{<year>}
+\articlenum{<number>}
+\datereceived{Day Month Year}
+\dateaccepted{Day Month Year}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ARTICLE START
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{frontmatter}
+\maketitle
+
+\begin{abstract}
+250 word limit
+\end{abstract}
+
+\end{frontmatter}
+
+\section{Introduction}
+
+\begin{itemize}
+
+\item Background
+
+	\begin{itemize}
+	\item Role of molecular dynamics in understanding protein structure and function and in drug design
+	\item Brief history of protein force fields
+	\end{itemize}
+
+\item Gap in field
+
+	\begin{itemize}
+	\item Force fields are trained against different empirical targets and are expected to describe some behaviors well and others poorly
+	\item Force fields for proteins often borrow parameters from more general force fields that aim to describe broader chemistry
+	\item Need for a comprehensive collection of experimental datasets that interrogates a wide range of physical properties of proteins
+	\end{itemize}
+
+\item Goals of current review
+
+	\begin{itemize}
+	\item Description of available datasets and not prescription of how comparisons should be made
+	\item Focus on peptides and globular proteins without ligands or cofactors to narrow scope
+	\end{itemize}
+
+\item Target audience
+
+	\begin{itemize}
+	\item Researchers involved in developing or assessing protein force fields
+	\item Assume familiarity with molecular dynamics techniques, force field terms, and basics of protein structure
+	\end{itemize}
+
+\item Review format
+
+	\begin{itemize}
+	\item Explanation of Perpetual Review format
+	\item Instructions for community involvement
+	\end{itemize}
+
+\item Outline of review sections
+
+\end{itemize}
+
+\section{Goals of benchmark datasets}
+
+\begin{itemize}
+
+\item Target observables
+
+	\begin{itemize}
+	\item Target experimental observables instead of structural models or quantum chemistry data
+	\end{itemize}
+
+\item Accessibility
+
+	\begin{itemize}
+	\item Identify datasets that are accessible without paywalls or restrictive licenses
+	\end{itemize}
+
+\item Multiple scales
+
+	\begin{itemize}
+	\item Identify observables that interrogate physical properties at different length and time scales
+	\item Goal is to assess force fields rather than train parameters, so computational cost can be high
+	\item System size should range from small---small enough to sample an ensemble exhaustively---to medium---large enough to exhibit stable folding behaviors
+	\end{itemize}
+
+\item Discriminatory power
+
+	\begin{itemize}
+	\item Identify systems that can discriminate between force fields
+	\item For example, most protein force fields can describe lysozyme well
+	\end{itemize}
+
+\end{itemize}
+
+\section{Room-temperature (RT) crystallography}
+
+\begin{itemize}
+
+\item Advantages of RT crystals
+
+	\begin{itemize}
+	\item RT crystals are higher quality and exhibit lower mosaicity than low-temperature crystals
+	\item Proteins in RT crystals fluctuate more than those in low temperature crystals
+	\item Observables are accessible in public databases in a common format
+	\end{itemize}
+
+\item Observables
+
+	\begin{itemize}
+
+	\item Electron density
+
+		\begin{itemize}
+		\item Electron density is independent of a structural model unless molecular replacement was used to solve phases
+		\item Electron density from solvent molecules can be included
+		\item Comparing simulations to experiments
+
+			\begin{itemize}
+			\item Quality metrics for structural models, e.g. R-factors or correlation coefficients, are likely too sensitive to meaningfully discriminate between force fields
+			\item Differences can be visualized by an $F_O - F_C$ map
+			\item A quantitative metric is a comparison between a structural model refined against simulated electron density and a structural model refined against experimental density, e.g. an RMSD
+			\end{itemize}
+
+		\end{itemize}
+
+	\item Reflections
+
+		\begin{itemize}
+		\item Raw reflections are totally independent of a structural model
+		\item Reflections are available in PDB entries
+		\item Non-Bragg peaks from diffuse scattering inform on large-scale fluctuations
+		\end{itemize}
+
+	\item Debye-Waller (B) factors
+
+		\begin{itemize}
+		\item B factors are available in PDB entries
+		\item B factors inform on local flexibility
+		\item A drawback is that B factors may reflect disorder in the crystal lattice rather than flexibility of the crystallized molecules
+		\end{itemize}
+	
+	\item Populations of alternative conformations
+
+		\begin{itemize}
+		\item Although alternative conformations rely on a structural model, this low resolution metric may discriminate between force fields that perform similarly on other observables
+		\end{itemize}
+
+	\end{itemize}
+
+\item Running crystal simulations
+
+	\begin{itemize}
+	\item Simulations of single unit cells are less expensive but may miss fluctuations that are important for some observables
+	\item Simulation of supercells are more realistic but may fail to maintain the correct symmetry
+	\item May need to include co-solvents in mother liquor
+	\end{itemize}
+
+\item Systems
+
+	\begin{itemize}
+
+	\item Criteria/desiderata
+
+		\begin{itemize}
+		\item High resolution ($<= \SI{1.2}{\angstrom}$) crystals to ensure high quality target data and identify tautomers and protonation states
+		\item Protonation state can be determined unambiguously by neutron diffraction
+		\item Aim for diversity in secondary structure
+		\item Systems for which data from multiple crystals with different symmetry are available are useful
+		\end{itemize}
+
+	\item Systems
+
+		\begin{itemize}
+		\item David Case
+		\item Julian Chen
+		\item James Fraser
+		\item Daniel Keedy
+		\item Michael Wall
+		\end{itemize}
+	
+	\end{itemize}
+
+\end{itemize}
+
+\begin{table*}[t]
+\caption{Room-temperature crystallography datasets}
+\begin{tabular}{p{0.3 \linewidth} p{0.1 \linewidth} p{0.2 \linewidth} p{0.15 \linewidth} p{0.15 \linewidth}}
+\toprule
+Description & PDB ID & Experiments & Experimental references & Computational references \\
+\midrule
+Endoglucanase & 3X2P & X-ray diffraction &  &  \\
+& & Neutron diffraction & & \\
+Scorpion toxin II & 1AHO & X-ray diffraction &  &  \\
+\bottomrule
+\end{tabular}
+\label{tab:xtal}
+\end{table*}
+
+\section{Nuclear magnetic resonance spectroscopy}
+
+\begin{itemize}
+
+\item Advantages of NMR
+
+	\begin{itemize}
+	\item NMR experiments are performed in the desired ensemble for most applications
+	\item Comparison to NMR data may reveal native state bias that is difficult to diagnose with crystal simulations
+	\item Many NMR observables can be related to specific FF terms
+	\end{itemize}
+
+\item Observables
+
+	\begin{itemize}
+
+	\item Chemical shift
+
+		\begin{itemize}
+		\item Easily accessible for many systems in BMRB
+		\item Directly informs on local backbone conformation for unstructured peptides and disordered proteins
+		\item Difficult to interpret for larger, folded proteins due to aromatic ring currents, spin diffusion, etc.
+		\end{itemize}
+
+	\item Scalar coupling
+
+		\begin{itemize}
+		\item Scalar coupling values for backbone amide proton inform on local backbone conformation
+		\item Requires Karplus parameters, which can be derived from QM
+		\end{itemize}
+
+	\item Helical propensities (merge with chemical shift section?)
+
+		\begin{itemize}
+		\item \ce{^{13}C=O} chemical shifts inform on helical propensities of amino acids
+		\item Benchmarks can target chemical shifts directly or Lifson-Roig helix extension parameters
+		\end{itemize}
+
+	\item Nuclear Overhauser effect (NOE) spectroscopy
+
+		\begin{itemize}
+		\item NOEs inform on interactions between residues distant in primary sequence
+		\item NOE intensities are nonlinear averages that are difficult to converge, so they may serve better as ordinal (i.e. strong/medium/weak) rather than quantitative assessments
+		\end{itemize}
+
+	\item Residual dipolar coupling (RDC)
+
+		\begin{itemize}
+		\item RDCs inform on large spatial motions
+		\item Calculating RDCs for large proteins requires computing an expensive alignment tensor
+		\end{itemize}
+
+	\item Spin relaxation
+
+		\begin{itemize}
+		\item Spin relaxation rates inform on large spatial motions for folded proteins
+		\item Spin relaxation can discriminate between force fields that describe global conformations and those that describe only local conformations
+		\item There is error from zero point motion and difference between modeled and true bond lengths, but the necessary correction may be small enough to ignore
+		\item Spin relaxation rates will be difficult to converge for large, folded proteins
+		\end{itemize}
+
+	\end{itemize}
+
+\item Running NMR simulations
+
+	\begin{itemize}
+	\item Viscosity of water model is known to affect tumbling rates and thus spin relaxation rates
+	\end{itemize}
+
+\item Systems
+
+	\begin{itemize}
+	\item Kyle Beauchamp chemical shifts and scalar couplings
+	\item Bernie Brooks spin relaxation dataset for lipids, good for methods
+	\item Lillian Chong scalar couplings for protein mimetics, good for methods
+	\item Kresten Lindorff-Larsen chemical shift and NOEs
+	\item Samuli Ollila spin relaxation dataset for proteins
+	\item Paul Robustelli chemical shifts, NOEs, and helical propensities
+	\item Lars Sch\"{a}fer c-Myb chemical shifts and NOEs
+	\end{itemize}
+
+\end{itemize}
+
+\begin{table*}[t]
+\caption{Nuclear magnetic resonance spectroscopy datasets}
+\begin{tabular}{p{0.3 \linewidth} p{0.1 \linewidth} p{0.2 \linewidth} p{0.15 \linewidth} p{0.15 \linewidth}}
+\toprule
+Description & PDB ID & Experiments & Experimental references & Computational references \\
+\midrule
+c-Myb transactivation domain & 1SB0 & \ce{^1H} chemical shifts &  &  \\
+& & NOESY & & \\
+Short peptides & & HDX exchange rates &  &  \\
+\bottomrule
+\end{tabular}
+\label{tab:nmr}
+\end{table*}
+
+\section{Hydrogen-deuterium exchange (HDX) experiments}
+
+\begin{itemize}
+
+\item Advantages of HDX
+
+	\begin{itemize}
+	\item HDX informs on folding of small proteins with simple tertiary structures
+	\item HDX discriminates between proteins with intermediate and high folding stability that have similar bulk properties or spin relaxation rates
+	\end{itemize}
+
+\item Observables
+
+	\begin{itemize}
+	\item Chemical shifts or HSQC measured by NMR
+	\item Mass spectrometry
+	\item Protection factor (exchange frequency relative to unfolded state) has an ambiguous relationship to computable quantities, e.g. free energies
+	\end{itemize}
+
+\item Systems
+
+	\begin{itemize}
+	\item Gabe Rocklin and Tobin Sosnick HDX dataset
+	\item Vincent Shaw G proteins
+	\item Vincent Voelz ubiquitin, BPTI, and myoglobin
+	\end{itemize}
+
+\end{itemize}
+
+\section{List of potential figures}
+
+\begin{itemize}
+
+\item Visualization of protein crystal supercell
+
+\item Visualization of differences in electron density with $F_O - F_C$ map
+
+\item Solution protein structure with NMR observables labeled
+
+	\begin{itemize}
+	\item Folded tertiary structure labeled with "RDC" and "Spin relaxation"
+	\item Long range contact labeled with "NOE"
+	\item Inset of $\alpha$ helix labeled with "HDX" and "Helical propensity"
+	\item Inset of peptide backbone with "Chemical shift" and "$^3J$ coupling" labeled
+	\end{itemize}
+
+\item Histograms of observables in larger datasets (perhaps borrowed from original publications
+
+	\begin{itemize}
+	\item Distribution of spin relaxation rates in Ollila dataset
+	\item Distribution of HDX exchange rates in Rocklin/Sosnick dataset
+	\end{itemize}
+
+\end{itemize}
+
+\section{Conclusions}
+
+\begin{itemize}
+
+\item Summarize key points
+
+\item Additional type of experiments
+
+	\begin{itemize}
+	\item Kirkwood-Buff integrals for co-solvents
+	\item Paramagnetic relaxation enhancement interactions
+	\item Binding free energies
+	\item Salt bridge dissociation rates
+	\item Folding observables
+
+		\begin{itemize}
+		\item Free energies
+		\item Kinetic rates
+		\item Melting temperatures
+		\end{itemize}
+
+	\item Small angle x-ray scattering observables
+
+		\begin{itemize}
+		\item Radii of gyration
+		\item Kratky plots
+		\item Pairwise distribution functions
+		\end{itemize}
+
+	\end{itemize}
+
+\item Additional protein systems
+
+	\begin{itemize}
+	\item Membrane proteins (Benoit Roux)
+	\item Proteins with ligands or cofactors
+	\item Protein mimetics, e.g. peptoids or $\beta$-peptides (Lillian Chong)
+	\end{itemize}
+
+\end{itemize}
+
+\section{Author Contributions}
+%%%%%%%%%%%%%%%%
+% This section mustt describe the actual contributions of
+% author. Since this is an electronic-only journal, there is
+% no length limit when you describe the authors' contributions,
+% so we recommend describing what they actually did rather than
+% simply categorizing them in a small number of
+% predefined roles as might be done in other journals.
+%
+% See the policies ``Policies on Authorship'' section of https://livecoms.github.io
+% for more information on deciding on authorship and author order.
+%%%%%%%%%%%%%%%%
+
+(Explain the contributions of the different authors here)
+
+% We suggest you preserve this comment:
+For a more detailed description of author contributions,
+see the GitHub issue tracking and changelog at \githubrepository.
+
+\section{Other Contributions}
+%%%%%%%%%%%%%%%
+% You should include all people who have filed issues that were
+% accepted into the paper, or that upon discussion altered what was in the paper.
+% Multiple significant contributions might mean that the contributor
+% should be moved to authorship at the discretion of the a
+%
+% See the policies ``Policies on Authorship'' section of https://livecoms.github.io for
+% more information on deciding on authorship and author order.
+%%%%%%%%%%%%%%%
+
+(Explain the contributions of any non-author contributors here)
+% We suggest you preserve this comment:
+For a more detailed description of contributions from the community and others, see the GitHub issue tracking and changelog at \githubrepository.
+
+\section{Potentially Conflicting Interests}
+%%%%%%%
+%Declare any potentially competing interests, financial or otherwise
+%%%%%%%
+
+MKG has an equity interest in and is a cofounder and scientific advisor of VeraChem.
+
+\section{Funding Information}
+%%%%%%%
+% Authors should acknowledge funding sources here. Reference specific grants.
+%%%%%%%
+We thank the Open Force Field Consortium and Initiative for financial and scientific support and the Molecular Sciences Software Institute (MolSSI) for its support of the Open Force Field Initiative.
+We also thank the National Institutes of Health (NIH) for support of this research via NIH R01GM132386.
+MKG acknowledges funding from National Institute of General Medical Sciences (GM061300).
+These findings are solely of the authors and do not necessarily represent the views of the NIH.
+
+\section*{Author Information}
+\makeorcid
+
+\bibliography{protein-benchmark-data}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% APPENDICES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\appendix
+
+
+\end{document}
